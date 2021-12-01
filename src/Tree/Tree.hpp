@@ -4,7 +4,7 @@
 #define HW1_WET_AVL_TREE_H
 
 #include "TNode.hpp"
-#include "Exceptions.hpp"
+#include "Exceptions.h"
 #include <cmath>
 #include <ostream>
 #include <iomanip>

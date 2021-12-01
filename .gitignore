@@ -26,6 +26,10 @@
 *.a
 *.lib
 
+# IDE Files
+idea/**
+.idea/*
+
 # Executables
 *.exe
 *.out
