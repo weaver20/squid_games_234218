@@ -1,7 +1,7 @@
 #ifndef SQUIDGAMES_PLAYERSMANAGER_H
 #define SQUIDGAMES_PLAYERSMANAGER_H
 
-#include "Auxiliaries.h"
+#include "../utils/Auxiliaries.h"
 
 
 class PlayersManager {
