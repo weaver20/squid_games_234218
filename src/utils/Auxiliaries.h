@@ -67,10 +67,8 @@ public:
     /****** Type functions ******/
     uint32_t getID() const;
     void setID(uint32_t id);
-
     uint32_t getGroupID() const;
     void setGroupID(uint32_t groupID);
-
     uint32_t getLevel() const;
     void setLevel(uint32_t level);
 

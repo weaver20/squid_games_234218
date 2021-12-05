@@ -70,10 +70,9 @@ StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int 
     {
         id_array[j] = player_arr[j]->getID();
     }
-    delete player_arr;
+    delete[] player_arr;
     *Players = id_array;
     return SUCCESS;
-    //current_group->scanKeysInorder(player_keys , i , current_group->getRoot());
 }
 
 
