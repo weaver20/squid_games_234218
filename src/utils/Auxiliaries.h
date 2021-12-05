@@ -13,6 +13,7 @@ private:
     uint32_t _level;
 
 public:
+    Player_Key() = default;
     Player_Key(uint32_t id, uint32_t level);
     ~Player_Key() = default;
     Player_Key(const Player_Key& other) = default;

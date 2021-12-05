@@ -61,7 +61,19 @@ StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int 
     {
         current_group = groups.findNodeWithKey(GroupID)->getValue();
     }
-    
+    int i = 0;
+    player* player_arr = nullptr;
+    player_arr = current_group->AVLToSortedArray(i);
+    *numOfPlayers = i;
+    int* id_array =(int*)malloc(i * sizeof (int));
+    for(int j = 0 ; j<i ; j++)
+    {
+        id_array[j] = player_arr[j]->getID();
+    }
+    delete player_arr;
+    *Players = id_array;
+    return SUCCESS;
+    //current_group->scanKeysInorder(player_keys , i , current_group->getRoot());
 }
 
 
