@@ -10,6 +10,16 @@ void Player::setID(uint32_t id) {
     _id = id;
 }
 
+uint32_t Player::getGroupID() const
+{
+    return _group_id;
+}
+
+void Player::setGroupID(uint32_t groupID)
+{
+    _group_id = groupID;
+}
+
 uint32_t Player::getLevel() const{
     return _level;
 }
