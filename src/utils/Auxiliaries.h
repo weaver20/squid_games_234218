@@ -55,11 +55,11 @@ private:
     std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>> _group;
     uint32_t _level;
     uint32_t _group_id;
-    friend class Group;
 
 public:
     /****** Default class functions ******/
-    Player(uint32_t id, std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>> group, uint32_t level = 0);
+    Player() = default;
+    Player(uint32_t id, std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>> group, uint32_t groupID, uint32_t level = 0);
     ~Player() = default;
     Player& operator=(const Player& other) = default;
     Player(const Player& other) = default;
@@ -75,6 +75,7 @@ public:
     std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>>& getGroup();
 };
 
+
 /*************** definitions of typedef ***************/
 typedef std::shared_ptr<Player> player;
 
@@ -84,6 +85,7 @@ typedef AVL_Tree<uint32_t , player> players_by_id_tree;
 typedef std::shared_ptr<players_tree> group;
 typedef AVL_Tree<uint32_t , group> group_tree;
 
+player* mergePlayerArrays(player* arr1, player* arr2, int size1, int size2);
 
 
 

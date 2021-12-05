@@ -9,6 +9,8 @@
 #include <ostream>
 #include <iomanip>
 
+
+
 template<class K, class T> // key & data
 class AVL_Tree {
 private:
@@ -30,7 +32,7 @@ private:
 
 public:
     AVL_Tree () = default;
-    AVL_Tree(T* arr, int start, int end);
+    AVL_Tree(K* arr_key, T* arr_val, int start, int end);
     explicit AVL_Tree(std::shared_ptr<TNode<K,T>> _root);
     AVL_Tree (const AVL_Tree<K,T>& avl_tree) = default;
     AVL_Tree<K,T>& operator=(const AVL_Tree<K,T>& other) = default;
@@ -47,7 +49,7 @@ public:
     std::shared_ptr<TNode<K,T>> getRightMost() const;
     std::shared_ptr<TNode<K,T>> getLeftMost() const;
     bool isEmpty() const;
-    std::shared_ptr<TNode<K,T>> sortedArrayToAVL(T* arr, int start, int end);
+    std::shared_ptr<TNode<K,T>> sortedArrayToAVL(K* arr_key, T* arr_val, int start, int end);
     void scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
     void scanKeysInorder(K* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
     //void searchRight(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
@@ -57,7 +59,8 @@ public:
 
 
 template<class K, class T>
-AVL_Tree<K,T>::AVL_Tree(T* arr, int start, int end): root(sortedArrayToAVL(arr, start, end)), left_most(root), right_most(root) , _size(end - start+1){
+AVL_Tree<K,T>::AVL_Tree(K* arr_key, T* arr_val, int start, int end):
+root(sortedArrayToAVL(arr_key, arr_val, start, end)), left_most(root), right_most(root) , _size(end - start+1){
     while(right_most->right){
         right_most = right_most->right;
     }
@@ -68,14 +71,14 @@ AVL_Tree<K,T>::AVL_Tree(T* arr, int start, int end): root(sortedArrayToAVL(arr, 
 
 template<class K, class T>
 std::shared_ptr<TNode<K,T>>
-AVL_Tree<K,T>::sortedArrayToAVL(T* arr, int start, int end){
+AVL_Tree<K,T>::sortedArrayToAVL(K* arr_key, T* arr_val, int start, int end){
     if(start > end){
         return nullptr;
     }
     int mid = start + (end - start) / 2;
-    std::shared_ptr<TNode<K,T>> root(new TNode<K,T>(arr[mid]->getModelID(), arr[mid]));
-    root->left = sortedArrayToAVL(arr, start, mid - 1);
-    root->right = sortedArrayToAVL(arr, mid + 1, end);
+    std::shared_ptr<TNode<K,T>> root(new TNode<K,T>(arr_key[mid], arr_val[mid]));
+    root->left = sortedArrayToAVL(arr_key, arr_val, start, mid - 1);
+    root->right = sortedArrayToAVL(arr_key, arr_val, mid + 1, end);
     if(root->left != nullptr){
         root->left->parent = root;
     }
@@ -93,7 +96,7 @@ void AVL_Tree<K,T>::scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> cur
     {
         scanInorder(arr , i , current_node->left);
     }
-    arr[i] = current_node;
+    arr[i] = current_node->getValue();
     i++;
     if(current_node->right)
     {
@@ -266,7 +269,6 @@ void AVL_Tree<K,T>::remove(K key){
         _size--;
         return;
     }
-    throw NodeNotInTree();
 }
 
 
