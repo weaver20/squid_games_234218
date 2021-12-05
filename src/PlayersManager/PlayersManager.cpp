@@ -25,6 +25,8 @@ StatusType PlayersManager::RemovePlayer(int PlayerID)
 {
      player current_player = players_by_id.findNodeWithKey(PlayerID)->getValue();
      Player_Key current_key = Player_Key(current_player->getID() ,current_player->getLevel());
+     group current_group = current_player->getGroup();
+
      players.remove(current_key);
      current_player->getGroup()->remove(current_key);
      players_by_id.remove(PlayerID);

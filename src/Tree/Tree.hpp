@@ -44,6 +44,7 @@ public:
     void setRightMost(std::shared_ptr<TNode<K,T>> _right_most);
     std::shared_ptr<TNode<K,T>> getRightMost() const;
     std::shared_ptr<TNode<K,T>> getLeftMost() const;
+    bool isEmpty() const;
     std::shared_ptr<TNode<K,T>> sortedArrayToAVL(T* arr, int start, int end);
 };
 
@@ -461,6 +462,12 @@ std::shared_ptr<TNode<K,T>> AVL_Tree<K,T>::getRightMost() const{
 template<class K, class T>
 std::shared_ptr<TNode<K,T>> AVL_Tree<K,T>::getLeftMost() const{
     return left_most;
+}
+
+template<class K, class T>
+bool AVL_Tree<K,T>::isEmpty() const
+{
+    return root != nullptr;
 }
 
 

@@ -73,14 +73,15 @@ public:
 };
 
 /*************** definitions of typedef ***************/
+typedef std::shared_ptr<Player> player;
 
-typedef AVL_Tree<Player_Key, std::shared_ptr<Player>> players_tree;
-typedef AVL_Tree<uint32_t , std::shared_ptr<Player>> players_by_id_tree;
+typedef AVL_Tree<Player_Key, player> players_tree;
+typedef AVL_Tree<uint32_t , player> players_by_id_tree;
 
 typedef std::shared_ptr<players_tree> group;
 typedef AVL_Tree<uint32_t , group> group_tree;
 
-typedef std::shared_ptr<Player> player;
+
 
 
 #endif //SQUID_GAMES_234218_AUXILIARIES_H
