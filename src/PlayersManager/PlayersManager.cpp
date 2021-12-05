@@ -94,6 +94,32 @@ StatusType PlayersManager::IncreaseLevel(int PlayerID, int LevelIncrease)
     }
 }
 
+StatusType PlayersManager::GetHighestLevel(int GroupID, int *PlayerID)
+{
+    try{
+        if(GroupID == 0 or !PlayerID)
+        {
+            return INVALID_INPUT;
+        }
+
+        group current_group(&players);
+
+        if(GroupID > 0)
+        {
+            current_group = groups.findNodeWithKey(GroupID)->getValue();
+            if(current_group == nullptr)
+            {
+                return FAILURE;
+            }
+        }
+        *PlayerID = (int)current_group->getRightMost()->getValue()->getID();
+        return SUCCESS;
+    }
+    catch (std::bad_alloc&) {
+        return ALLOCATION_ERROR;
+    }
+}
+
 StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers)
 {
     try{
@@ -125,7 +151,7 @@ StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int 
         }
         for(int j = 0 ; j<i ; j++)
         {
-            id_array[j] = player_arr[j]->getID();
+            id_array[j] = (int)player_arr[j]->getID();
         }
         delete player_arr;
         *Players = id_array;
@@ -134,7 +160,6 @@ StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int 
     catch (std::bad_alloc&) {
         return ALLOCATION_ERROR;
     }
-
 }
 
 
