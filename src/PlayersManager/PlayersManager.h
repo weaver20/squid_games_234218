@@ -9,6 +9,7 @@ private:
     group_tree groups;
     group_tree non_empty_groups;
     players_tree players;
+    players_by_id_tree players_by_id;
 public:
     /****** Default class functions ******/
     PlayersManager();
