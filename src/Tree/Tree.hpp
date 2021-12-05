@@ -47,7 +47,9 @@ public:
     std::shared_ptr<TNode<K,T>> getLeftMost() const;
     bool isEmpty() const;
     std::shared_ptr<TNode<K,T>> sortedArrayToAVL(T* arr, int start, int end);
-    T* AVLToSortedArray(int& size);
+    void scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
+    //void searchRight(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
+    T* AVLToSortedArray(int& size) const;
 
 };
 
@@ -80,6 +82,32 @@ AVL_Tree<K,T>::sortedArrayToAVL(T* arr, int start, int end){
     }
     root->refresh();
     return root;
+}
+
+template<class K, class T>
+void AVL_Tree<K,T>::scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const
+{
+    if(current_node->left)
+    {
+        scanInorder(arr , i , current_node->left);
+    }
+    arr[i] = current_node;
+    i++;
+    if(current_node->right)
+    {
+        scanInorder(arr , i , current_node->right);
+    }
+}
+
+template<class K, class T>
+T* AVL_Tree<K,T>::AVLToSortedArray(int& size) const
+{
+    size = _size;
+    T* arr = new T[size];
+    int i = 0;
+    scanInorder(arr , i , root);
+    //assert i = size
+    return arr;
 }
 
 template<class K, class T>
