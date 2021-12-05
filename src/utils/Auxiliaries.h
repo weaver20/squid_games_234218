@@ -53,6 +53,7 @@ private:
     uint32_t _id;
     std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>> _group;
     uint32_t _level;
+    uint32_t _group_id;
     friend class Group;
 
 public:
@@ -65,6 +66,9 @@ public:
     /****** Type functions ******/
     uint32_t getID() const;
     void setID(uint32_t id);
+
+    uint32_t getGroupID() const;
+    void setGroupID(uint32_t groupID);
 
     uint32_t getLevel() const;
     void setLevel(uint32_t level);

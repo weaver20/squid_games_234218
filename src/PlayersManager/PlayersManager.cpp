@@ -27,6 +27,10 @@ StatusType PlayersManager::RemovePlayer(int PlayerID)
      Player_Key current_key = Player_Key(current_player->getID() ,current_player->getLevel());
      group current_group = current_player->getGroup();
 
+     if(current_group->isEmpty())
+     {
+         non_empty_groups.remove(current_player->getGroupID());
+     }
      players.remove(current_key);
      current_player->getGroup()->remove(current_key);
      players_by_id.remove(PlayerID);
@@ -55,8 +59,9 @@ StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int 
     group current_group(&players);
     if(GroupID > 0)
     {
-        current_group = non_empty_groups.findNodeWithKey(GroupID)->getValue();
+        current_group = groups.findNodeWithKey(GroupID)->getValue();
     }
+    
 }
 
 

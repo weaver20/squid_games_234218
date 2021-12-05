@@ -15,6 +15,7 @@ private:
     std::shared_ptr<TNode<K,T>> root;
     std::shared_ptr<TNode<K,T>> left_most;
     std::shared_ptr<TNode<K,T>> right_most;
+    int _size;
     std::shared_ptr<TNode<K,T>> rotate(std::shared_ptr<TNode<K,T>> to_cycle);
     std::shared_ptr<TNode<K,T>> rotateLL(std::shared_ptr<TNode<K,T>> A);
     std::shared_ptr<TNode<K,T>> rotateLR(std::shared_ptr<TNode<K,T>> A);
@@ -46,11 +47,13 @@ public:
     std::shared_ptr<TNode<K,T>> getLeftMost() const;
     bool isEmpty() const;
     std::shared_ptr<TNode<K,T>> sortedArrayToAVL(T* arr, int start, int end);
+    T* AVLToSortedArray(int& size);
+
 };
 
 
 template<class K, class T>
-AVL_Tree<K,T>::AVL_Tree(T* arr, int start, int end): root(sortedArrayToAVL(arr, start, end)), left_most(root), right_most(root){
+AVL_Tree<K,T>::AVL_Tree(T* arr, int start, int end): root(sortedArrayToAVL(arr, start, end)), left_most(root), right_most(root) , _size(end - start+1){
     while(right_most->right){
         right_most = right_most->right;
     }
@@ -80,7 +83,7 @@ AVL_Tree<K,T>::sortedArrayToAVL(T* arr, int start, int end){
 }
 
 template<class K, class T>
-AVL_Tree<K,T>::AVL_Tree(std::shared_ptr<TNode<K,T>> _root): root(_root), left_most(_root), right_most(_root) {}
+AVL_Tree<K,T>::AVL_Tree(std::shared_ptr<TNode<K,T>> _root): root(_root), left_most(_root), right_most(_root) , _size(1) {}
 
 template<class K, class T>
 std::shared_ptr<TNode<K,T>> AVL_Tree<K,T>::findNodeWithKey(K key)
@@ -115,6 +118,7 @@ void AVL_Tree<K,T>::insert(K key, T data){
         root = to_insert;
         left_most = to_insert;
         right_most = to_insert;
+        _size++;
         return;
     }
     if(key < left_most->getKey()){
@@ -127,6 +131,7 @@ void AVL_Tree<K,T>::insert(K key, T data){
     left_most->refresh();
     right_most->refresh();
     to_insert->refresh();
+    _size++;
 }
 
 template<class K, class T>
@@ -212,6 +217,7 @@ void AVL_Tree<K,T>::remove(K key){
             }
         }
         deleteNode(to_delete);
+        _size--;
         return;
     }
     throw NodeNotInTree();
@@ -416,6 +422,7 @@ void AVL_Tree<K,T>::clearTree(){
     recursiveDelete(root);
     left_most = nullptr;
     right_most = nullptr;
+    _size = 0;
 }
 
 
@@ -467,7 +474,8 @@ std::shared_ptr<TNode<K,T>> AVL_Tree<K,T>::getLeftMost() const{
 template<class K, class T>
 bool AVL_Tree<K,T>::isEmpty() const
 {
-    return root != nullptr;
+   // return root != nullptr;
+   return _size == 0;
 }
 
 
