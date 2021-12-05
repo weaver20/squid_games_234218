@@ -1,6 +1,6 @@
 #include "Auxiliaries.h"
 
-Player::Player(uint32_t id, std::shared_ptr<Group> group, uint32_t level): _id(id), _group(group), _level(level) {}
+Player::Player(uint32_t id, std::shared_ptr<players_tree> group, uint32_t level): _id(id), _group(group), _level(level) {}
 
 uint32_t Player::getID() const {
     return _id;
@@ -18,11 +18,11 @@ void Player::setLevel(uint32_t level) {
     _level = level;
 }
 
-std::shared_ptr<Group>& Player::getGroup(){
+std::shared_ptr<players_tree>& Player::getGroup(){
     return _group;
 }
 
-Group::Group(uint32_t id, uint32_t numOfPlayers): _id(id), _num_of_players(numOfPlayers) {}
+/*Group::Group(uint32_t id, uint32_t numOfPlayers): _id(id), _num_of_players(numOfPlayers) {}
 
 uint32_t Group::getID() const {
     return _id;
@@ -38,7 +38,7 @@ uint32_t Group::getNumOfPlayers() const {
 
 AVL_Tree<Player_Key, std::shared_ptr<Player>>& Group::getGroupPlayers() {
     return _group_players;
-}
+}*/
 
 Player_Key::Player_Key(uint32_t id, uint32_t level): _id(id),  _level(level){}
 
