@@ -25,38 +25,39 @@ public:
     bool operator>(const Player_Key& other) const;
 };
 
-class Group{
+/*class Group{
 private:
     uint32_t _id;
     uint32_t _num_of_players;
     AVL_Tree<Player_Key, std::shared_ptr<Player>> _group_players;
-public:
+public:*/
 
     /****** Default class functions ******/
-    explicit Group(uint32_t id, uint32_t numOfPlayers = 0);
+    /*explicit Group(uint32_t id, uint32_t numOfPlayers = 0);
     ~Group() = default;
     Group& operator=(const Group& other) = default;
-    Group(const Group& other) = default;
+    Group(const Group& other) = default;*/
 
     /****** Type functions ******/
-    uint32_t getID() const;
+    /*uint32_t getID() const;
     void setID(uint32_t id);
 
     uint32_t getNumOfPlayers() const;
 
     AVL_Tree< Player_Key, std::shared_ptr<Player>>& getGroupPlayers();
-};
+};*/
+
 
 class Player{
 private:
     uint32_t _id;
-    std::shared_ptr<Group> _group;
+    std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>> _group;
     uint32_t _level;
     friend class Group;
 
 public:
     /****** Default class functions ******/
-    Player(uint32_t id, std::shared_ptr<Group> group, uint32_t level = 0);
+    Player(uint32_t id, std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>> group, uint32_t level = 0);
     ~Player() = default;
     Player& operator=(const Player& other) = default;
     Player(const Player& other) = default;
@@ -68,16 +69,18 @@ public:
     uint32_t getLevel() const;
     void setLevel(uint32_t level);
 
-    std::shared_ptr<Group>& getGroup();
+    std::shared_ptr<AVL_Tree<Player_Key, std::shared_ptr<Player>>>& getGroup();
 };
 
 /*************** definitions of typedef ***************/
 
-typedef AVL_Tree<uint32_t , std::shared_ptr<Group>> group_tree;
 typedef AVL_Tree<Player_Key, std::shared_ptr<Player>> players_tree;
-typedef AVL_Tree<uint32_t , std::shared_ptr<class Player>> players_by_id_tree;
-typedef std::shared_ptr<class Player> player;
-typedef std::shared_ptr<Group> group;
+typedef AVL_Tree<uint32_t , std::shared_ptr<Player>> players_by_id_tree;
+
+typedef std::shared_ptr<players_tree> group;
+typedef AVL_Tree<uint32_t , group> group_tree;
+
+typedef std::shared_ptr<Player> player;
 
 
 #endif //SQUID_GAMES_234218_AUXILIARIES_H
