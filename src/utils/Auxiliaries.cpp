@@ -1,6 +1,7 @@
 #include "Auxiliaries.h"
 
-Player::Player(uint32_t id, std::shared_ptr<players_tree> group, uint32_t level): _id(id), _group(group), _level(level) {}
+Player::Player(uint32_t id, std::shared_ptr<players_tree> group, uint32_t groupID, uint32_t level): _id(id),
+_group(group), _level(level), _group_id(groupID) {}
 
 uint32_t Player::getID() const {
     return _id;
@@ -78,5 +79,30 @@ uint32_t Player_Key::getId() const {
 
 uint32_t Player_Key::getLevel() const {
     return _level;
+}
+
+/*************** Auxiliaries functions ***************/
+player* mergePlayerArrays(player* arr1, player* arr2, int size1, int size2) {
+    int i = 0, j = 0;
+    player* res = new player[size1 + size2];
+    while (i < size1 and j < size2) {
+        if (arr1[i] < arr2[j]) {
+            res[i + j] = arr1[i];
+            i++;
+        }
+        else {
+            res[i + j] = arr2[j];
+            j++;
+        }
+    }
+    while (j < size2) {
+        res[i + j] = arr2[j];
+        j++;
+    }
+    while (i < size1) {
+        res[i + j] = arr1[i];
+        i++;
+    }
+    return res;
 }
 
