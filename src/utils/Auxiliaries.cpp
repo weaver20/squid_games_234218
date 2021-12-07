@@ -58,7 +58,7 @@ bool Player_Key::operator<(const Player_Key &other) const {
         return true;
     }
     else if (_level == other._level) {
-        if (_id < other._id) {
+        if (_id > other._id) {
             return true;
         }
     }
