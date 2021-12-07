@@ -139,7 +139,7 @@ StatusType PlayersManager::GetHighestLevel(int GroupID, int *PlayerID)
 StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers)
 {
     try{
-        if(!Players or !numOfPlayers or GroupID == 0)
+        if(not Players or not numOfPlayers or GroupID == 0)
         {
             return INVALID_INPUT;
         }
