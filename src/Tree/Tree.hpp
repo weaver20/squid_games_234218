@@ -50,8 +50,9 @@ public:
     std::shared_ptr<TNode<K,T>> getLeftMost() const;
     bool isEmpty() const;
     std::shared_ptr<TNode<K,T>> sortedArrayToAVL(K* arr_key, T* arr_val, int start, int end);
-    void scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node,
-                     int& limit) const;
+    void scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
+    void scanKeysInorder(K* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
+    //void searchRight(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const;
     T* AVLToSortedArray(int& size) const;
 
 };
@@ -78,10 +79,10 @@ AVL_Tree<K,T>::sortedArrayToAVL(K* arr_key, T* arr_val, int start, int end){
     std::shared_ptr<TNode<K,T>> root(new TNode<K,T>(arr_key[mid], arr_val[mid]));
     root->left = sortedArrayToAVL(arr_key, arr_val, start, mid - 1);
     root->right = sortedArrayToAVL(arr_key, arr_val, mid + 1, end);
-    if(root->left != nullptr) {
+    if(root->left != nullptr){
         root->left->parent = root;
     }
-    if(root->right != nullptr) {
+    if(root->right != nullptr){
         root->right->parent = root;
     }
     root->refresh();
@@ -89,20 +90,32 @@ AVL_Tree<K,T>::sortedArrayToAVL(K* arr_key, T* arr_val, int start, int end){
 }
 
 template<class K, class T>
-void AVL_Tree<K,T>::scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node, int& limit) const
+void AVL_Tree<K,T>::scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const
 {
-    if (limit == 0) {
-        return;
-    }
-
-    if(current_node->left) {
-        scanInorder(arr , i , current_node->left, limit);
+    if(current_node->left)
+    {
+        scanInorder(arr , i , current_node->left);
     }
     arr[i] = current_node->getValue();
     i++;
-    limit--;
-    if(current_node->right) {
-        scanInorder(arr , i , current_node->right, limit);
+    if(current_node->right)
+    {
+        scanInorder(arr , i , current_node->right);
+    }
+}
+
+template<class K, class T>
+void AVL_Tree<K,T>::scanKeysInorder(K* arr , int& i ,std::shared_ptr<TNode<K,T>> current_node) const
+{
+    if(current_node->left)
+    {
+        scanInorder(arr , i , current_node->left);
+    }
+    arr[i] = current_node->getKey();
+    i++;
+    if(current_node->right)
+    {
+        scanInorder(arr , i , current_node->right);
     }
 }
 
@@ -112,15 +125,14 @@ T* AVL_Tree<K,T>::AVLToSortedArray(int& size) const
     size = _size;
     T* arr = new T[size];
     //T* arr = malloc(sizeof(T) * size);
-    int i = -1;
-    scanInorder(arr , i , root, i);
+    int i = 0;
+    scanInorder(arr , i , root);
     //assert i = size
     return arr;
 }
 
 template<class K, class T>
-AVL_Tree<K,T>::AVL_Tree(std::shared_ptr<TNode<K,T>> _root): root(_root), left_most(_root),
-right_most(_root) , _size(1) {}
+AVL_Tree<K,T>::AVL_Tree(std::shared_ptr<TNode<K,T>> _root): root(_root), left_most(_root), right_most(_root) , _size(1) {}
 
 template<class K, class T>
 std::shared_ptr<TNode<K,T>> AVL_Tree<K,T>::findNodeWithKey(K key)
@@ -519,6 +531,11 @@ bool AVL_Tree<K,T>::isEmpty() const
    // return root != nullptr;
    return _size == 0;
 }
+
+
+
+
+
 
 
 

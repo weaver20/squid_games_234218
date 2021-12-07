@@ -79,6 +79,19 @@ StatusType PlayersManager::RemovePlayer(int PlayerID)
     catch (std::bad_alloc&) {
         return ALLOCATION_ERROR;
     }
+  
+     player current_player = players_by_id.findNodeWithKey(PlayerID)->getValue();
+     Player_Key current_key = Player_Key(current_player->getID() ,current_player->getLevel());
+     group current_group = current_player->getGroup();
+
+     if(current_group->isEmpty())
+     {
+         non_empty_groups.remove(current_player->getGroupID());
+     }
+     players_by_level.remove(current_key);
+     current_player->getGroup()->remove(current_key);
+     players_by_id.remove(PlayerID);
+     return SUCCESS;
 }
 
 StatusType PlayersManager::IncreaseLevel(int PlayerID, int LevelIncrease)
@@ -139,7 +152,7 @@ StatusType PlayersManager::GetHighestLevel(int GroupID, int *PlayerID)
 StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers)
 {
     try{
-        if(not Players or not numOfPlayers or GroupID == 0)
+        if(!Players or !numOfPlayers or GroupID == 0)
         {
             return INVALID_INPUT;
         }
@@ -223,30 +236,6 @@ StatusType PlayersManager::ReplaceGroup(int GroupID, int ReplacementID) {
   catch (std::bad_alloc&) {
       return ALLOCATION_ERROR;
   }
-}
-
-StatusType PlayersManager::GetGroupsHighestLevel(int numOfGroups, int **Players) {
-    if (numOfGroups < 1 or not Players) {
-        return INVALID_INPUT;
-    }
-    if (numOfGroups > non_empty_groups.getSize()) {
-        return FAILURE;
-    }
-    try {
-
-        int limit = numOfGroups, i = 0;
-        group* gr_array = new group[numOfGroups];
-        non_empty_groups.scanInorder(gr_array, i, non_empty_groups.getRoot(),numOfGroups);
-        *Players = (int*) malloc(numOfGroups * sizeof(int));
-        for (i = 0; i < numOfGroups; i++) {
-            *(*Players + i) = (int) gr_array[i]->getRightMost()->getValue()->getID();
-        }
-        delete[] gr_array;
-        return SUCCESS;
-    }
-    catch (std::bad_alloc&) {
-        return ALLOCATION_ERROR;
-    }
 }
 
 
