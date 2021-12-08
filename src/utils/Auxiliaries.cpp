@@ -66,7 +66,7 @@ bool Player_Key::operator<(const Player_Key &other) const {
 }
 
 bool Player_Key::operator==(const Player_Key &other) const {
-    return not((*this < other) or (*this > other));
+    return _id == other._id and _level == other._level;
 }
 
 bool Player_Key::operator>(const Player_Key &other) const {
