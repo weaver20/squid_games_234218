@@ -9,11 +9,11 @@ StatusType PlayersManager::AddPlayer(int PlayerID, int GroupID, int Level) {
         return INVALID_INPUT;
     }
     try{
-        if (not groups.findNodeWithKey(GroupID or players_by_id.findNodeWithKey(PlayerID))) {
+        if (not groups.findNodeWithKey(GroupID) or players_by_id.findNodeWithKey(PlayerID)) {
             return FAILURE;
         }
         group gr = groups.findNodeWithKey(GroupID)->getValue();
-        player p(new Player(PlayerID, gr, Level));
+        player p(new Player(PlayerID, gr, GroupID, Level));
         Player_Key key(PlayerID, Level);
         players_by_id.insert(PlayerID, p);
         players_by_level.insert(key, p);
@@ -38,7 +38,7 @@ StatusType PlayersManager::AddGroup(int GroupID)
         {
             return INVALID_INPUT;
         }
-        if(groups.findNodeWithKey(GroupID) == nullptr)
+        if(not groups.isEmpty() and groups.findNodeWithKey(GroupID) != nullptr)
         {
             return FAILURE;
         }
@@ -118,17 +118,18 @@ StatusType PlayersManager::GetHighestLevel(int GroupID, int *PlayerID)
             return INVALID_INPUT;
         }
 
-        group current_group(&players_by_level);
-
         if(GroupID > 0)
         {
-            current_group = groups.findNodeWithKey(GroupID)->getValue();
-            if(current_group == nullptr)
-            {
+            if(not groups.findNodeWithKey(GroupID)) {
                 return FAILURE;
             }
+            group current_group (groups.findNodeWithKey(GroupID)->getValue());
+            *PlayerID = (int)current_group->getRightMost()->getValue()->getID();
         }
-        *PlayerID = (int)current_group->getRightMost()->getValue()->getID();
+        else {
+            group current_group(&players_by_level);
+            *PlayerID = (int) current_group->getRightMost()->getValue()->getID();
+        }
         return SUCCESS;
     }
     catch (std::bad_alloc&) {
@@ -136,40 +137,33 @@ StatusType PlayersManager::GetHighestLevel(int GroupID, int *PlayerID)
     }
 }
 
-StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers)
-{
-    try{
-        if(not Players or not numOfPlayers or GroupID == 0)
-        {
+StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers) {
+    try {
+        if(not Players or not numOfPlayers or GroupID == 0) {
             return INVALID_INPUT;
         }
         group current_group(&players_by_level);
-        if(GroupID > 0)
-        {
+        if(GroupID > 0) {
             current_group = groups.findNodeWithKey(GroupID)->getValue();
-            if(current_group == nullptr)
-            {
+            if(current_group == nullptr) {
                 return FAILURE;
             }
         }
         int i = 0;
         player* player_arr = nullptr;
         player_arr = current_group->AVLToSortedArray(i);
-        if(!player_arr)
-        {
+        if(!player_arr) {
             return ALLOCATION_ERROR;
         }
         *numOfPlayers = i;
         int* id_array =(int*)malloc(i * sizeof (int));
-        if(!id_array)
-        {
+        if(not id_array) {
             return ALLOCATION_ERROR;
         }
-        for(int j = 0 ; j<i ; j++)
-        {
+        for(int j = 0 ; j<i ; j++) {
             id_array[j] = (int)player_arr[j]->getID();
         }
-        delete player_arr;
+        delete[] player_arr;
         *Players = id_array;
         return SUCCESS;
     }
@@ -214,7 +208,7 @@ StatusType PlayersManager::ReplaceGroup(int GroupID, int ReplacementID) {
        for (int i = 0; i < original_size + replace_size; i++){
            arr_key[i] = Player_Key(merged_arr[i]->getID(), merged_arr[i]->getLevel());
        }
-       group merged_group(new players_tree(arr_key, merged_arr, 0, original_size + replace_size));
+       group merged_group(new players_tree(arr_key, merged_arr, 0, original_size + replace_size - 1));
        groups.insert(ReplacementID, merged_group);
        non_empty_groups.insert(ReplacementID, merged_group);
        return SUCCESS;
@@ -236,7 +230,7 @@ StatusType PlayersManager::GetGroupsHighestLevel(int numOfGroups, int **Players)
 
         int limit = numOfGroups, i = 0;
         group* gr_array = new group[numOfGroups];
-        non_empty_groups.scanInorder(gr_array, i, non_empty_groups.getRoot(),numOfGroups);
+        non_empty_groups.scanInorder(gr_array, i, non_empty_groups.getRoot(),limit);
         *Players = (int*) malloc(numOfGroups * sizeof(int));
         for (i = 0; i < numOfGroups; i++) {
             *(*Players + i) = (int) gr_array[i]->getRightMost()->getValue()->getID();

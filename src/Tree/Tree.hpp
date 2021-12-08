@@ -112,8 +112,8 @@ T* AVL_Tree<K,T>::AVLToSortedArray(int& size) const
     size = _size;
     T* arr = new T[size];
     //T* arr = malloc(sizeof(T) * size);
-    int i = -1;
-    scanInorder(arr , i , root, i);
+    int i = 0, limit = -1;
+    scanInorder(arr , i , root, limit);
     //assert i = size
     return arr;
 }
