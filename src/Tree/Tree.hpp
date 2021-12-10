@@ -98,6 +98,9 @@ void AVL_Tree<K,T>::scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> cur
     if(current_node->left) {
         scanInorder(arr , i , current_node->left, limit);
     }
+    if (limit == 0) {
+        return;
+    }
     arr[i] = current_node->getValue();
     i++;
     limit--;
@@ -109,8 +112,17 @@ void AVL_Tree<K,T>::scanInorder(T* arr , int& i ,std::shared_ptr<TNode<K,T>> cur
 template<class K, class T>
 T* AVL_Tree<K,T>::AVLToSortedArray(int& size) const
 {
+    if(root == nullptr)
+    {
+        return nullptr;
+    }
     size = _size;
     T* arr = new T[size];
+    if(arr == nullptr)
+    {
+        size = -1;
+        return nullptr;
+    }
     //T* arr = malloc(sizeof(T) * size);
     int i = 0, limit = -1;
     scanInorder(arr , i , root, limit);
@@ -214,16 +226,23 @@ int AVL_Tree<K,T>::countChildren(std::shared_ptr<TNode<K,T>> node) {
 template<class K, class T>
 void AVL_Tree<K,T>::remove(K key){
     std::shared_ptr<TNode<K,T>> to_delete = findNodeWithKey(key);
-    if(to_delete){
-        if(to_delete == left_most){
-            if(to_delete == root){
+    if(to_delete) {
+        if (_size == 1) {
+            _size = 0;
+            root = nullptr;
+            left_most = nullptr;
+            right_most = nullptr;
+            return;
+        }
+        /*if(to_delete == left_most) {
+            if(to_delete == root) {
                 std::shared_ptr<TNode<K,T>> it = root->right;
                 while(it and it->left){ // The tree is balanced hence the iteration amount is limited
                     it = it->left;
                 }
                 left_most = it;
             }
-            else{
+            else {
                 std::shared_ptr<TNode<K,T>> it = left_most->parent;
                 if(it->right and it->right->left){
                     it = it->right->left;
@@ -234,8 +253,8 @@ void AVL_Tree<K,T>::remove(K key){
                 left_most = it;
             }
         }
-        else if(to_delete == right_most){
-            if(to_delete == root){
+        if(to_delete == right_most) {
+            if(to_delete == root) {
                 std::shared_ptr<TNode<K,T>> it = root->left;
                 while(it and it->right){
                     it = it->right;
@@ -252,8 +271,17 @@ void AVL_Tree<K,T>::remove(K key){
                 }
                 right_most = it;
             }
-        }
+        }*/
         deleteNode(to_delete);
+        std::shared_ptr<TNode<K,T>> it1 = root, it2 = root;
+        while (it1->right) {
+            it1 = it1->right;
+        }
+        right_most = it1;
+        while (it2->left) {
+            it2 = it2->left;
+        }
+        left_most = it2;
         _size--;
         return;
     }

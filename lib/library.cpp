@@ -2,14 +2,15 @@
 #include "../src/PlayersManager/PlayersManager.h"
 
 void *Init() {
-    PlayersManager *DS;
+    //PlayersManager *DS;
     try {
-        DS = new PlayersManager();
+        PlayersManager *DS = new PlayersManager();
+        return (void *) DS;
     }
     catch (std::bad_alloc &) {
         return nullptr;
     }
-    return (void *) DS;
+
 }
 
 StatusType AddGroup(void *DS, int GroupID) {
@@ -69,8 +70,8 @@ StatusType GetGroupsHighestLevel(void *DS, int numOfGroups, int **Players) {
 }
 
 void Quit(void** DS) {
-    if(not *DS){
-        delete ((PlayersManager*) *DS);
+    if(*DS != NULL) {
+        delete (PlayersManager *) (*DS);
     }
     *DS = NULL;
 }

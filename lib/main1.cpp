@@ -340,7 +340,7 @@ void PrintAll(int *playerIDs, int numOfPlayers) {
     for (int i = 0; i < numOfPlayers; i++) {
         cout << i + 1 << "\t||\t" << playerIDs[i] << endl;
     }
-    cout << "and there are no more players_by_level!" << endl;
+    cout << "and there are no more players!" << endl;
 
     free (playerIDs);
 }
@@ -374,7 +374,7 @@ void PrintGroupsHighest(int *playerIDs, int numOfGroups) {
     for (int i = 0; i < numOfGroups; i++) {
         cout << i + 1 << "\t||\t" << playerIDs[i] << endl;
     }
-    cout << "and there are no more players_by_level!" << endl;
+    cout << "and there are no more players!" << endl;
 
     free (playerIDs);
 }

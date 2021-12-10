@@ -82,11 +82,11 @@ uint32_t Player_Key::getLevel() const {
 }
 
 /*************** Auxiliaries functions ***************/
-player* mergePlayerArrays(player* arr1, player* arr2, int size1, int size2) {
+player* mergePlayerArrays(Player_Key* key_arr1 ,Player_Key* key_arr2 , player* arr1, player* arr2, int size1, int size2) {
     int i = 0, j = 0;
     player* res = new player[size1 + size2];
     while (i < size1 and j < size2) {
-        if (arr1[i] < arr2[j]) {
+        if (key_arr1[i] < key_arr2[j]) {
             res[i + j] = arr1[i];
             i++;
         }
