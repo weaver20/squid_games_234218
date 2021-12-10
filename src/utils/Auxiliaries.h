@@ -85,6 +85,6 @@ typedef AVL_Tree<uint32_t , player> players_by_id_tree;
 typedef std::shared_ptr<players_tree> group;
 typedef AVL_Tree<uint32_t , group> group_tree;
 
-player* mergePlayerArrays(player* arr1, player* arr2, int size1, int size2);
+player* mergePlayerArrays(Player_Key* key_arr1 ,Player_Key* key_arr2, player* arr1, player* arr2, int size1, int size2);
 
 #endif //SQUID_GAMES_234218_AUXILIARIES_H
